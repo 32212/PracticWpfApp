@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PracticWpfApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" FontFamily="Comic Sans MS" WindowStartupLocation="CenterScreen"> 
+        Title="MainWindow" Height="450" Width="800" FontFamily="Comic Sans MS" WindowStartupLocation="CenterScreen">
+
     <Grid>
-        
+
+        <Frame Name="fMain" Grid.Row="1" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden">
+
+        </Frame>
     </Grid>
 </Window>
