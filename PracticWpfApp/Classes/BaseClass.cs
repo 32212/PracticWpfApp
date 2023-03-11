@@ -8,5 +8,6 @@ namespace PracticWpfApp.Classes
 {
     internal class BaseClass
     {
+        public static EntitiesModel EM;
     }
 }

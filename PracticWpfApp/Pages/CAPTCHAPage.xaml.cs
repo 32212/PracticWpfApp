@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PracticWpfApp.Classes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace PracticWpfApp.Pages
 
         string code = "";
         int numsymbs; //сгенеррированное число символов
-        int count; //число для входа
+        int count = 0; //число для входа
 
         public CAPTCHAPage()
         {
@@ -98,7 +99,7 @@ namespace PracticWpfApp.Pages
 
 
             char[] wordsymbs = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-            numsymbs = rnd1.Next(7, 10); //от 7 до 10 символов
+            numsymbs = rnd1.Next(4, 4); //4 символа
 
             int wordnum; //число или цифра 
             int rndnum; //случайное число
@@ -148,7 +149,7 @@ namespace PracticWpfApp.Pages
 
                 heigyh = rnd1.Next(0, 100);
 
-                int styletype = rnd1.Next(1, 3); //стиль для каждого символа
+                int styletype = rnd1.Next(1, 3); 
 
                 switch (styletype)
                 {
@@ -162,29 +163,6 @@ namespace PracticWpfApp.Pages
                         };
                         Container.Children.Add(txb);
 
-                        break;
-
-                    case 2:
-                        TextBlock txb1 = new TextBlock() //жирный шрифт
-                        {
-                            Text = randstyle[i].ToString(),
-                            Padding = new Thickness(width, heigyh, 0, 0),
-                            FontSize = 26,
-                            FontWeight = FontWeights.Bold,
-
-                        };
-                        Container.Children.Add(txb1);
-                        break;
-
-                    case 3:
-                        TextBlock txb2 = new TextBlock() //курсив и жирный
-                        {
-                            Text = randstyle[i].ToString(),
-                            Padding = new Thickness(width, heigyh, 0, 0),
-                            FontSize = 26,
-                            FontStyle = FontStyles.Italic
-                        };
-                        Container.Children.Add(txb2);
                         break;
                 }
             } 
@@ -203,11 +181,11 @@ namespace PracticWpfApp.Pages
                     count = 0; //сбрасываем попытки
                 }
 
-                else if (count == 2)
+                else if (count == 2) //открываем страницу вторизации с запущенным таймером
                 {
                     MessageBox.Show("Вы вводите неверный код, будте внимательнее при вводе и повторите попытку еще раз");
-                    Content = null;
                     count = 0;
+                    FrameClass.MainFrame.Navigate(new AutorizationPage(1));
                 }
 
                 else

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PracticWpfApp.Classes;
+using PracticWpfApp.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,10 @@ namespace PracticWpfApp
         public MainWindow()
         {
             InitializeComponent();
+
+            BaseClass.EM = new EntitiesModel();
+            FrameClass.MainFrame = fMain;
+            FrameClass.MainFrame.Navigate(new AutorizationPage());
         }
     }
 }

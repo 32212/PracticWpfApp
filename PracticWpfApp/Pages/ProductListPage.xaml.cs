@@ -24,5 +24,29 @@ namespace PracticWpfApp.Pages
         {
             InitializeComponent();
         }
+
+        public ProductListPage(int a) //конструктор дял клиента
+        {
+            InitializeComponent();
+
+            
+        }
+
+        public ProductListPage(char b) //конструктор для администратора
+        {
+            InitializeComponent();
+        }
+
+        public ProductListPage(string c) //конструктор для менеджера
+        {
+            InitializeComponent();
+        }
+
+        public ProductListPage(int a, int b) //конструктор для гостя
+        {
+            InitializeComponent();
+        }
+
+        
     }
 }

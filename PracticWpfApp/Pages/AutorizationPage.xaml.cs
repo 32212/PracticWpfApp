@@ -27,6 +27,9 @@ namespace PracticWpfApp.Pages
         public int attempts = 0; //считаем попытки входа
         public int sec = 10; //задаем требуемое для ожидания время
 
+        public static string login; //поля для записи логина и пароля, хотя зачем они нкжны? пусть пользователь новый введет и все
+        public static string password;
+
         public AutorizationPage()
         {
             InitializeComponent();
@@ -38,7 +41,7 @@ namespace PracticWpfApp.Pages
             spTm.Visibility = Visibility.Visible;
             btnAutorization.IsEnabled = false;
 
-            timer.Interval = new TimeSpan(0, 0, 0, 0); //устанавливаем интервал в 1 секунду
+            timer.Interval = new TimeSpan(0, 0, 1); //устанавливаем интервал в 1 секунду
             timer.Start(); //запускаем таймер
             timer.Tick += new EventHandler(unsuccessInp); //по окончанию таймера, метод будет запускаться, обновляя число
         }
@@ -55,36 +58,58 @@ namespace PracticWpfApp.Pages
             {
                 timer.Stop(); //останавливаем работу таймера
                 FrameClass.MainFrame.Navigate(new AutorizationPage()); //обновляем страницу без таймера
-                MessageBox.Show("Отсчет завершен", "Повторите ввод", MessageBoxButton.OK);
+                MessageBox.Show("Повторите ввод данных");
             }
         }
 
         private void btnGuest_Click(object sender, RoutedEventArgs e) //авторизация в качестве гостя
         {
-            FrameClass.MainFrame.Navigate(new ProductListPage()); //потом тут добавить параметр для гостя
+            FrameClass.MainFrame.Navigate(new ProductListPage(1,1));
         }
 
         private void btnAutorization_Click(object sender, RoutedEventArgs e) //событие при авторизации
         {
-            string login = "Иван"; //добавить сюда возможность ввода существующих данных, исправить и условие проверки
-            string password = "1234";
-
-            if (login == tbLogin.Text && password == tbPassword.Text) //Условие на проверку введенного значения
+            if (tbLogin.Text == "" || tbLogin.Text == " " && tbPassword.Text == "" || tbPassword.Text == " ")
             {
-                attempts = 0; //сбрасываем попытки при успешном входе 
-                FrameClass.MainFrame.Navigate(new ProductListPage());
+                attempts++;
+                MessageBox.Show("Ошибка ввода");
+                return;
             }
 
-            else if (attempts >= 1)
+            User autoUser = BaseClass.EM.User.FirstOrDefault(x => x.UserLogin == tbLogin.Text && x.UserPassword == tbPassword.Text);
+
+            if (autoUser == null)
             {
-                FrameClass.MainFrame.Navigate(new CAPTCHAPage()); //требуем пользователся пройти капчу
+                attempts++;
+                MessageBox.Show("Проверьте введенные данные", "Пользователь не найден!", MessageBoxButton.OK); 
+                return;
             }
 
-            else
+            else if (attempts>1) //запуск капчи
             {
-                MessageBox.Show("Неверный логин или пароль, повторите ввод", "Ошибка ввода", MessageBoxButton.OK);
+                attempts = 0;
+                MessageBox.Show("Я обрекаю тебя на капчу...");
+
+                FrameClass.MainFrame.Navigate(new CAPTCHAPage());
             }
 
+            else 
+            {
+                attempts = 0;
+
+                switch (autoUser.RoleID) //провкрка на роль, если пользоваетль найден //в зависимости от роли, добавить конструкторы, которые разграничивают функционал
+                {
+                    case 1: //клиент
+                        MessageBox.Show("Добро пожаловать, клиент");
+                        break;
+                    case 2: //админ
+                        MessageBox.Show("Добро пожаловать, администратор");
+                        break;
+                    case 3: //менеджер
+                        MessageBox.Show("Добро пожаловать, менеджер");
+                        break;
+                }
+            }      
         }
     }
 }
