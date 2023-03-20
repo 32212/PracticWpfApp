@@ -5,67 +5,119 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PracticWpfApp.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="450" d:DesignWidth="800" FontFamily="Comic Sans MS"
       Title="ProductListPage">
-
+    
     <Page.Resources>
         <BitmapImage x:Key="defaultImage" UriSource="../Images/logo.png"/>
     </Page.Resources>
-    
-    <Grid>
 
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="120"/>
-            <RowDefinition/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="143*"/>
+            <RowDefinition Height="600*"/>
+            <RowDefinition Height="150*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Vertical">
-
-            <StackPanel Orientation="Vertical">
-
-            </StackPanel>
-
+        <StackPanel Grid.Row="0" Orientation="Vertical" >
+            
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-
+                <TextBlock Name="tbMainTitle" HorizontalAlignment="Center" >Список товаров</TextBlock>
+                <TextBlock Name="tbNameUser" HorizontalAlignment="Right" Margin="50,0,0,0"></TextBlock>
             </StackPanel>
 
+            <StackPanel  Orientation="Horizontal" >
+
+                <StackPanel Orientation="Vertical" Margin="20,0,0,25">
+                    <TextBlock Margin="0,0,15,10">Сортировка по цене:</TextBlock>
+                    
+                    <ComboBox Name="cbSort" Width="160"  Height="30"  SelectionChanged="cbSort_Changed" HorizontalAlignment="Left" IsEnabled="True">
+                        <ComboBoxItem Content="По возрастанию"/>
+                        <ComboBoxItem Content="По убыванию"/>
+                    </ComboBox>
+                    
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="10,0,0,25">
+                    <TextBlock Margin="0,0,15,10">Фильтрация по скидке:</TextBlock>
+
+                    <ComboBox Name="cbDiscount" Width="160"  Height="30" SelectionChanged="cbDiscount_Changed">
+                        <ComboBoxItem>Все диапазоны</ComboBoxItem>
+                        <ComboBoxItem>от 0% до 9.99%</ComboBoxItem>
+                        <ComboBoxItem>от 10% до 14.99%</ComboBoxItem>
+                        <ComboBoxItem>от 15%</ComboBoxItem>
+                    </ComboBox>
+
+                </StackPanel>
+                
+                <StackPanel Orientation="Vertical" Margin="10,0,0,25">
+                    <TextBlock Margin="0,0,15,10">Поиск по названию</TextBlock>
+                    <TextBox Name="tbFindByTitle" TextChanged="tbFindByTitle_TextChanged"  Height="30" Width="160"></TextBox>
+                </StackPanel>
+
+                <StackPanel Margin="40,0,0,0" Orientation="Horizontal">
+                    <TextBlock Name ="tbSecond" Margin="20,0,0,0" ></TextBlock>
+                    <TextBlock Margin="20,0,20,0">из</TextBlock>
+                    <TextBlock Name ="tbFirst"></TextBlock>
+                </StackPanel>
+                
+            </StackPanel>
         </StackPanel>
 
-        <ListView Name="listViewService" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.Row="1">
+        <ListView Name="listProduct" ScrollViewer.VerticalScrollBarVisibility="Visible" Grid.Row="1" Margin="0,30,0,0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border Padding="5" CornerRadius="25" BorderThickness="1" BorderBrush="Gray">
-                        <Grid>
+                    <Border Padding="5" CornerRadius="5" BorderThickness="1" BorderBrush="Aquamarine">
+                        <Grid Name="gridMain" Background="{Binding DiscountColor}">
 
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="250"></ColumnDefinition>
-                                <ColumnDefinition Width="3*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-
-                            <Image Source="{Binding ProductPhoto, TargetNullValue={StaticResource defaultImage}}" Grid.Column="0" Height="220"></Image>
-
-                            <StackPanel Grid.Column="1" Margin="10">
+                            <StackPanel Margin="30,0,0,0" Orientation="Horizontal">
+                                <StackPanel Width="200" HorizontalAlignment="Left">
+                                    <Image Width="200" Source="{Binding ProductPhoto, TargetNullValue={StaticResource defaultImage}}"/>
+                                </StackPanel>
 
                                 <StackPanel Orientation="Vertical">
-                                    
-                                    <TextBlock Text="{Binding ProductName}" Margin="5" FontWeight="Bold"></TextBlock>
-                                    <TextBlock Text="{Binding ProductDescription}"></TextBlock>
-                                    <TextBlock Text="{Binding ProductManufacturer.ProductManufacturer}"></TextBlock>
-                                    <TextBlock Text="{Binding ProductCost}"></TextBlock>
-                                
+                                    <TextBlock Name="tbNameProduct" VerticalAlignment="Top" Text="{Binding ProductName}"/>
+                                    <StackPanel Orientation="Vertical">
+
+                                        <TextBlock Name="tbDecription" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ProductDescription,StringFormat= Описание товара: {0} }"/>
+                                        <TextBlock HorizontalAlignment="Left"  Margin="10,0,0,0" Text="{Binding ProductManufacturerID,StringFormat= Производитель: {0}}"/>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Name="tbCost" HorizontalAlignment="Left" Margin="10,0,0,0"  Uid="{Binding ProductDiscountAmount}" TextDecorations="Strikethrough" Text="{Binding ProductCost, StringFormat= Цена: {0:F2}}" Loaded="tbCost_Loaded"/>
+                                            <TextBlock Text=" Цена:"></TextBlock>
+                                            <TextBlock Name="tbDiscPrice" HorizontalAlignment="Left"  Margin="10,0,0,0" Text="{Binding DiscountPrice, StringFormat= {} {0:g}}"/>
+                                            <TextBlock>руб.</TextBlock>
+                                        </StackPanel>
+
+                                    </StackPanel>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal">
-                                    <Button Uid="{Binding ProductArticleNumberID}" Name="btnAddClient" Content="Добавить"></Button>
-                                    <Button Uid="{Binding ProductArticleNumberID}" Name="btnEditService" Content="Редактировать"></Button>
-                                    <Button Uid="{Binding ProductArticleNumberID}" Name="btnDeleteService" Content="Удалить"></Button>
+                                <StackPanel Margin="20,0,0,0" Orientation="Vertical" Width="200" HorizontalAlignment="Right">
+                                    <TextBlock HorizontalAlignment="Right" Margin="0,20,0,0" Width="200" Text="{Binding ProductDiscountAmount, StringFormat={}*скидка {0} %}"/>
                                 </StackPanel>
+
                             </StackPanel>
+
                         </Grid>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="btnAddOrder" Header="Добавить к заказу" Click="btnAddOrder_Click"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
+
+        <StackPanel Orientation="Horizontal" Margin="20" HorizontalAlignment="Left" Grid.Row="2">
+            <Button Name="btnOrder" Width="150" Click="btnOrder_Click">Заказы</Button>
+            <Button Name="btnEnter" Width="150" Click="btnBack_Click">Назад</Button>
+            <Button Name="btnBasket" Width="150" Click="btnBasket_Click">Корзина</Button>
+        </StackPanel>
     </Grid>
 </Page>

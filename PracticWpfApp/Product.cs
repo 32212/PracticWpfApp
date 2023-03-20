@@ -11,7 +11,8 @@ namespace PracticWpfApp
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Windows.Media;
+
     public partial class Product
     {
         public int ProductArticleNumberID { get; set; }
@@ -27,5 +28,41 @@ namespace PracticWpfApp
         public int ProductQuantityInStock { get; set; }
         public string ProductDescription { get; set; }
         public string ProductPhoto { get; set; }
+
+        public SolidColorBrush DiscountColor //меняем цвет в зависимости от скидки
+        {
+            get
+            {
+                if (ProductDiscountAmount != null && ProductDiscountAmount > 15)
+                {
+                    SolidColorBrush mushThen15 = new SolidColorBrush(Color.FromRgb(127, 255, 0));
+                    return mushThen15;
+                }
+                else
+                {
+                    SolidColorBrush notMushThen15 = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+                    return notMushThen15;
+                }
+            }
+        }
+
+        public string DiscountPrice //цена со скидкой
+        {
+            get
+            {
+                if (ProductDiscountAmount != null)
+                {
+                    double first = Convert.ToDouble(ProductCost) / 100;
+                    double price = Convert.ToDouble(ProductCost) - first * (Convert.ToDouble(ProductDiscountAmount));
+                    return price.ToString();
+                }
+                else
+                {
+                    return Convert.ToString(ProductCost);
+                }
+
+            }
+        }
+
     }
 }

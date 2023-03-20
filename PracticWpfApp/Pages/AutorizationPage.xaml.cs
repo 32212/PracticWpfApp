@@ -88,7 +88,6 @@ namespace PracticWpfApp.Pages
             else if (attempts>1) //запуск капчи
             {
                 attempts = 0;
-                MessageBox.Show("Я обрекаю тебя на капчу...");
 
                 FrameClass.MainFrame.Navigate(new CAPTCHAPage());
             }
@@ -101,12 +100,15 @@ namespace PracticWpfApp.Pages
                 {
                     case 1: //клиент
                         MessageBox.Show("Добро пожаловать, клиент");
+                        FrameClass.MainFrame.Navigate(new ProductListPage());
                         break;
                     case 2: //админ
                         MessageBox.Show("Добро пожаловать, администратор");
+                        FrameClass.MainFrame.Navigate(new ProductListPage());
                         break;
                     case 3: //менеджер
                         MessageBox.Show("Добро пожаловать, менеджер");
+                        FrameClass.MainFrame.Navigate(new ProductListPage());
                         break;
                 }
             }      
