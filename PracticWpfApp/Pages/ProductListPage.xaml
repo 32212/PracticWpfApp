@@ -5,8 +5,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PracticWpfApp.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800" FontFamily="Comic Sans MS"
-      Title="ProductListPage">
+      d:DesignHeight="500" d:DesignWidth="800" FontFamily="Comic Sans MS"
+      Title="Продукты">
     
     <Page.Resources>
         <BitmapImage x:Key="defaultImage" UriSource="../Images/logo.png"/>
@@ -73,7 +73,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Padding="5" CornerRadius="5" BorderThickness="1" BorderBrush="Aquamarine">
-                        <Grid Name="gridMain" Background="{Binding DiscountColor}">
+                        <Grid Name="gridMain">
 
                             <StackPanel Margin="30,0,0,0" Orientation="Horizontal">
                                 <StackPanel Width="200" HorizontalAlignment="Left">
@@ -85,12 +85,12 @@
                                     <StackPanel Orientation="Vertical">
 
                                         <TextBlock Name="tbDecription" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ProductDescription,StringFormat= Описание товара: {0} }"/>
-                                        <TextBlock HorizontalAlignment="Left"  Margin="10,0,0,0" Text="{Binding ProductManufacturerID,StringFormat= Производитель: {0}}"/>
+                                        <TextBlock HorizontalAlignment="Left"  Margin="10,0,0,0" Text="{Binding ProductManufacturer.ProductManufacturer1,StringFormat= Производитель: {} }"/>
 
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Name="tbCost" HorizontalAlignment="Left" Margin="10,0,0,0"  Uid="{Binding ProductDiscountAmount}" TextDecorations="Strikethrough" Text="{Binding ProductCost, StringFormat= Цена: {0:F2}}" Loaded="tbCost_Loaded"/>
                                             <TextBlock Text=" Цена:"></TextBlock>
-                                            <TextBlock Name="tbDiscPrice" HorizontalAlignment="Left"  Margin="10,0,0,0" Text="{Binding DiscountPrice, StringFormat= {} {0:g}}"/>
+                                            <TextBlock Name="tbDiscPrice" HorizontalAlignment="Left"  Margin="10,0,0,0" Text="{Binding DiscountPrice, StringFormat={}{0:g}}"/>
                                             <TextBlock>руб.</TextBlock>
                                         </StackPanel>
 
@@ -107,17 +107,12 @@
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Name="btnAddOrder" Header="Добавить к заказу" Click="btnAddOrder_Click"/>
-                </ContextMenu>
-            </ListView.ContextMenu>
         </ListView>
 
         <StackPanel Orientation="Horizontal" Margin="20" HorizontalAlignment="Left" Grid.Row="2">
             <Button Name="btnOrder" Width="150" Click="btnOrder_Click">Заказы</Button>
             <Button Name="btnEnter" Width="150" Click="btnBack_Click">Назад</Button>
-            <Button Name="btnBasket" Width="150" Click="btnBasket_Click">Корзина</Button>
+            <Button Name="btnBasket" Width="150">Корзина</Button>
         </StackPanel>
     </Grid>
 </Page>

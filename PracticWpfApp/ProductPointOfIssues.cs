@@ -14,10 +14,19 @@ namespace PracticWpfApp
     
     public partial class ProductPointOfIssues
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProductPointOfIssues()
+        {
+            this.Order = new HashSet<Order>();
+        }
+    
         public int ProductPointOfIssuesID { get; set; }
         public int Code { get; set; }
         public string City { get; set; }
         public string Street { get; set; }
         public int HousNumber { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Order> Order { get; set; }
     }
 }

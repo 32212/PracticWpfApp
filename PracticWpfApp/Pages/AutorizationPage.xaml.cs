@@ -64,7 +64,8 @@ namespace PracticWpfApp.Pages
 
         private void btnGuest_Click(object sender, RoutedEventArgs e) //авторизация в качестве гостя
         {
-            FrameClass.MainFrame.Navigate(new ProductListPage(1,1));
+            MessageBox.Show("Добро пожаловать, дорогой гость");
+            FrameClass.MainFrame.Navigate(new ProductListPage());
         }
 
         private void btnAutorization_Click(object sender, RoutedEventArgs e) //событие при авторизации
@@ -73,42 +74,41 @@ namespace PracticWpfApp.Pages
             {
                 attempts++;
                 MessageBox.Show("Ошибка ввода");
-                return;
+                //return;
             }
 
-            User autoUser = BaseClass.EM.User.FirstOrDefault(x => x.UserLogin == tbLogin.Text && x.UserPassword == tbPassword.Text);
+            User user = BaseClass.EM.User.FirstOrDefault(x => x.UserLogin == tbLogin.Text && x.UserPassword == tbPassword.Text);
 
-            if (autoUser == null)
+            if (user == null)
             {
                 attempts++;
                 MessageBox.Show("Проверьте введенные данные", "Пользователь не найден!", MessageBoxButton.OK); 
-                return;
+                //return;
             }
 
-            else if (attempts>1) //запуск капчи
+            if (attempts == 2) //запуск капчи
+            {
+                attempts = 0;
+                FrameClass.MainFrame.Navigate(new CAPTCHAPage());              
+            }
+
+            if (user != null) 
             {
                 attempts = 0;
 
-                FrameClass.MainFrame.Navigate(new CAPTCHAPage());
-            }
-
-            else 
-            {
-                attempts = 0;
-
-                switch (autoUser.RoleID) //провкрка на роль, если пользоваетль найден //в зависимости от роли, добавить конструкторы, которые разграничивают функционал
+                switch (user.RoleID) //проверка на роль, если пользоваетль найден
                 {
                     case 1: //клиент
                         MessageBox.Show("Добро пожаловать, клиент");
-                        FrameClass.MainFrame.Navigate(new ProductListPage());
+                        FrameClass.MainFrame.Navigate(new ProductListPage(user));
                         break;
                     case 2: //админ
                         MessageBox.Show("Добро пожаловать, администратор");
-                        FrameClass.MainFrame.Navigate(new ProductListPage());
+                        FrameClass.MainFrame.Navigate(new ProductListPage(user));
                         break;
                     case 3: //менеджер
                         MessageBox.Show("Добро пожаловать, менеджер");
-                        FrameClass.MainFrame.Navigate(new ProductListPage());
+                        FrameClass.MainFrame.Navigate(new ProductListPage(user));
                         break;
                 }
             }      

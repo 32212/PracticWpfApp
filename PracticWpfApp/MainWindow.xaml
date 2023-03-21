@@ -5,10 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PracticWpfApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="900" FontFamily="Comic Sans MS" WindowStartupLocation="CenterScreen">
+        Title="Пиши-стирай" Height="550" Width="900" FontFamily="Comic Sans MS" WindowStartupLocation="CenterScreen">
 
     <Grid>
 
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Left">
+            <Image Source="/Images/logo.png" Height="70"/>
+            <TextBlock Text="ООО «Пиши-стирай»" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10"/>
+        </StackPanel>
         <Frame Name="fMain" Grid.Row="1" Grid.ColumnSpan="3" NavigationUIVisibility="Hidden">
 
         </Frame>

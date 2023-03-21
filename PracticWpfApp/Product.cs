@@ -15,54 +15,59 @@ namespace PracticWpfApp
 
     public partial class Product
     {
-        public int ProductArticleNumberID { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Product()
+        {
+            this.OrderProduct = new HashSet<OrderProduct>();
+        }
+    
+        public int ProductID { get; set; }
         public string ProductArticleNumber { get; set; }
         public string ProductName { get; set; }
         public int UnitsID { get; set; }
-        public int ProductCategoryID { get; set; }
-        public int ProductSupplierID { get; set; }
-        public int ProductManufacturerID { get; set; }
         public decimal ProductCost { get; set; }
-        public Nullable<byte> ProductDiscountAmount { get; set; }
         public Nullable<byte> ProductDiscountAmountMax { get; set; }
+        public int ProductManufacturerID { get; set; }
+        public int ProductSupplierID { get; set; }
+        public int ProductCategoryID { get; set; }
+        public Nullable<byte> ProductDiscountAmount { get; set; }
         public int ProductQuantityInStock { get; set; }
         public string ProductDescription { get; set; }
         public string ProductPhoto { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderProduct> OrderProduct { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ProductManufacturer ProductManufacturer { get; set; }
+        public virtual ProductSupplier ProductSupplier { get; set; }
+        public virtual Units Units { get; set; }
 
-        public SolidColorBrush DiscountColor //меняем цвет в зависимости от скидки
-        {
-            get
-            {
-                if (ProductDiscountAmount != null && ProductDiscountAmount > 15)
-                {
-                    SolidColorBrush mushThen15 = new SolidColorBrush(Color.FromRgb(127, 255, 0));
-                    return mushThen15;
-                }
-                else
-                {
-                    SolidColorBrush notMushThen15 = new SolidColorBrush(Color.FromRgb(255, 255, 255));
-                    return notMushThen15;
-                }
-            }
-        }
 
-        public string DiscountPrice //цена со скидкой
+        public string DiscountPrice
         {
             get
             {
                 if (ProductDiscountAmount != null)
                 {
-                    double first = Convert.ToDouble(ProductCost) / 100;
-                    double price = Convert.ToDouble(ProductCost) - first * (Convert.ToDouble(ProductDiscountAmount));
+                    double onePers = Convert.ToDouble(ProductCost) / 100;
+                    double price = Convert.ToDouble(ProductCost) - onePers * (Convert.ToDouble(ProductDiscountAmount));
                     return price.ToString();
                 }
                 else
                 {
                     return Convert.ToString(ProductCost);
                 }
-
             }
         }
-
+        
+        public double DiscPriceDouble
+        {
+            get
+            {
+                double onePers = Convert.ToDouble(ProductCost) / 100;
+                double price = Convert.ToDouble(ProductCost) - onePers * (Convert.ToDouble(ProductDiscountAmount));
+                return price;
+            }
+        }
     }
 }

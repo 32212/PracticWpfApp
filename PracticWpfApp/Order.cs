@@ -9,11 +9,20 @@
 
 namespace PracticWpfApp
 {
+    using PracticWpfApp.Classes;
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
+    using System.Windows.Media;
+
     public partial class Order
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Order()
+        {
+            this.OrderProduct = new HashSet<OrderProduct>();
+        }
+    
         public int OrderID { get; set; }
         public int OrderNumber { get; set; }
         public System.DateTime OrderDate { get; set; }
@@ -22,5 +31,108 @@ namespace PracticWpfApp
         public Nullable<int> UserId { get; set; }
         public int OrderStatusID { get; set; }
         public string OrderCode { get; set; }
+    
+        public virtual OrderStatus OrderStatus { get; set; }
+        public virtual ProductPointOfIssues ProductPointOfIssues { get; set; }
+        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderProduct> OrderProduct { get; set; }
+
+        public double DiscountPrice
+        {
+            get
+            {
+                List<OrderProduct> products = BaseClass.EM.OrderProduct.Where(x => x.OrderID == OrderID).ToList();
+                double sum = 0;
+                foreach (OrderProduct product in products)
+                {
+                    sum = sum + (Convert.ToDouble(product.Product.DiscountPrice) * product.Count);
+                }
+                double summa = 0;
+                foreach (OrderProduct product in products)
+                {
+                    summa = summa + (Convert.ToDouble(product.Product.ProductCost) * product.Count);
+                }
+                double proc = (summa - sum) / summa * 100;
+                return proc;
+            }
+        }
+        public double SumDiscount
+        {
+            get
+            {
+                List<OrderProduct> products = BaseClass.EM.OrderProduct.Where(x => x.OrderID == OrderID).ToList();
+                double sum = 0;
+                foreach (OrderProduct product in products)
+                {
+                    sum = sum + (Convert.ToDouble(product.Product.ProductCost) * Convert.ToDouble(product.Product.DiscountPrice) / 100) * product.Count;
+                }
+                return sum;
+            }
+        }
+        public SolidColorBrush Count3 //если количество товаров превысит 3, то цвет поменяется
+        {
+            get
+            {
+                SolidColorBrush scbf = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+
+                List<OrderProduct> listOrderProducts = BaseClass.EM.OrderProduct.Where(x => x.OrderID == OrderID).ToList();
+                int check = 0;
+                int check1 = 0;
+                for (int i = 0; i < listOrderProducts.Count; i++)
+                {
+                    if (listOrderProducts[i].Count > 3)
+                    {
+                        for (int j = 0; j < listOrderProducts.Count; j++)
+                        {
+                            if (listOrderProducts[j].Count > 3)
+                            {
+                                check1 = 1;
+                            }
+                            else
+                            {
+                                check1 = 0;
+                                break;
+                            }
+                        }
+                        if (check1 == 1)
+                            check = 1;
+                    }
+                    else if (listOrderProducts[i].Count == 0)
+                    {
+                        for (int j = 0; j < listOrderProducts.Count; j++)
+                        {
+                            if (listOrderProducts[j].Count == 0)
+                            {
+                                check1 = 1;
+                            }
+                            else
+                            {
+                                check1 = 0;
+                                break;
+                            }
+                        }
+                        if (check1 == 1)
+                            check = 2;
+                    }
+                }
+
+                if (check == 1)
+                {
+                    SolidColorBrush scb = new SolidColorBrush(Color.FromRgb(27, 27, 179));
+                    return scb;
+                }
+                else if (check == 2)
+                {
+                    SolidColorBrush scb = new SolidColorBrush(Color.FromRgb(255, 140, 0));
+                    return scb;
+                }
+                else
+                {
+                    return scbf;
+                }
+
+            }
+        }
     }
 }

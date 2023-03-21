@@ -14,7 +14,16 @@ namespace PracticWpfApp
     
     public partial class ProductCategory
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ProductCategory()
+        {
+            this.Product = new HashSet<Product>();
+        }
+    
         public int ProductCategoryID { get; set; }
         public string ProductCategory1 { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Product> Product { get; set; }
     }
 }
