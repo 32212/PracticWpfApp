@@ -33,7 +33,6 @@ namespace PracticWpfApp.Windows
         {
             this.Close();
         }
-
         private void btnBack_Click(object sender, RoutedEventArgs e) //сохраняем данные и закрываем окно
         {
             try

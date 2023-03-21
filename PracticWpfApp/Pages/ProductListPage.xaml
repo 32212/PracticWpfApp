@@ -85,7 +85,6 @@
                                     <StackPanel Orientation="Vertical">
 
                                         <TextBlock Name="tbDecription" HorizontalAlignment="Left" Margin="10,0,0,0" Text="{Binding ProductDescription,StringFormat= Описание товара: {0} }"/>
-                                        <!--<TextBlock HorizontalAlignment="Left"  Margin="10,0,0,0" Text="{Binding ProductManufacturer.ProductManufacturer1}"/>-->
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="Производитель: "/>
                                             <TextBlock Text="{Binding ProductManufacturer.ProductManufacturer1}" TextWrapping="Wrap"/>

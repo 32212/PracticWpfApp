@@ -74,7 +74,6 @@ namespace PracticWpfApp.Pages
             {
                 attempts++;
                 MessageBox.Show("Ошибка ввода");
-                //return;
             }
 
             User user = BaseClass.EM.User.FirstOrDefault(x => x.UserLogin == tbLogin.Text && x.UserPassword == tbPassword.Text);
@@ -83,7 +82,6 @@ namespace PracticWpfApp.Pages
             {
                 attempts++;
                 MessageBox.Show("Проверьте введенные данные", "Пользователь не найден!", MessageBoxButton.OK); 
-                //return;
             }
 
             if (attempts == 2) //запуск капчи
